@@ -5,7 +5,7 @@
         <meta name="author" content="Annastasia Stathakos">
         <meta name="description" content="html script for login page">
         <meta charset="UTF-8">
-        <meta http-equiv="refresh" content="30">
+        <!-- meta http-equiv="refresh" content="30" -->
         <title> login | Tinder for Friends </title>
 
 	<!-- will make a css style sheet that matches whatever ethan designs  -->
@@ -18,7 +18,7 @@
             <h1>Log-in<h1><br>
 
 	    <!-- form asks user for their username and password -->
-            <form action="./cgi-bin/login.cgi" method="post"> 
+            <form action="../cgi-bin/login.cgi" method="post"> 
                 <input type="text" name="user" placeholder="Username">
                 <input type="password" name="pass" placeholder="Password">
                 <input type="submit" name="login" class="login login-submit" value="login">
@@ -38,16 +38,14 @@
 		<h1>Register</h1><br>
 
 		<!-- form asks user for full name, job description, desired username and pasword -->
-		<form action="./cgi-bin/register.c" method="post"> 
-		    <input type="text" name="first" placeholder="First name ex. John">
-		    <input type="text" name="last" placeholder="Last name ex. Doe">
-		    <input type="text" name="user" placeholder="Your username ex: John_Doe">
-		    <input type="password" name="pass" placeholder="New Password">
-		    <input type="submit" name="register" class=regrastion registration-submit" value="register">
+		<form action="../cgi-bin/register.cgi" method="post" id="usrform"> 
+		    <input type="text" name="fullname" placeholder="eg. Buckship Fozket"><br><br>
+		    <textarea rows="4" cols="50" name="job" form="usrform">Describe your occupation in less than 250 characters...</textarea><br><br>
+		    <input type="text" name="user" placeholder="Create a Username..." maxlength="30">
+		    <input type="password" name="pass" placeholder="New Password" maxlength="30">
+		    <input type="submit" name="register" class="register register-submit" value="register">
 		</form>
 	</div> 
-        <script src='login.c'></script>
-        <script src='login.html'></script>
     </body>
 </html>
 
