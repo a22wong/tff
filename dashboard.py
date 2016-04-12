@@ -1,0 +1,43 @@
+#!/usr/bin/python
+
+import cgi, cgitb
+
+cgitb.enable()
+
+print """<html>
+
+	<head>
+		<title> tff Dashboard </title> 
+	</head>
+
+	<body bgcolor="ECFAFF">
+	
+	<font face="Arial Rounded MT Bold" color="2340FA" size="3">
+		<p align="right">
+		<a href="http://www.cs.mcgill.ca/~ecohn/tff/makefriend.html">
+                        Make a Friend
+                </a>
+		&emsp;
+		<a href="http://www.cs.mcgill.ca/~ecohn/tff/seefriend.html">
+                        See a Friend
+                </a>
+		&emsp;
+		<a href="http://www.cs.mcgill.ca/~ecohn/tff/index.html">
+                        Logout
+                </a>
+		</p>
+	<center><form name="status" action="status.py" method="get">
+
+		<font face="Arial Rounded MT Bold" color="FF846A" size="4"><b>
+			Update status: 
+		</b></font>
+		<input type="text" name="status">
+		<input type="submit" value="Post">
+	</form></center>
+	
+	<br><br>
+	
+
+
+	</body>
+</html>"""
