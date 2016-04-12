@@ -43,19 +43,17 @@ def head():
 			</p>
 		"""
 def form():
-	print """ <center><form name="status" action="status.py" method="get">
+	print """ <form name="status" action="status.py" method="get">
 
 		<font face="Arial Rounded MT Bold" color="FF846A" size="4"><b>
 			Update status: 
 		</b></font>
-		<input type="text" name="status">
+		<input type="text" name="status" width="48" height="30">
 		<input type="submit" value="Post">
-		</form></center>
+		</form>
 	
 		<br><br>
 	
-
-
 		</body>
 		</html>"""
 
@@ -66,7 +64,7 @@ def statuses():
 			
 	statuses=s.read().splitlines()
 	friends=f.read().splitlines()
-	#open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself) 
+	"""open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself)""" 
 
 	for i, elem in enumerate(friends):
 		if friends[i].split(" ")[0]=username:
