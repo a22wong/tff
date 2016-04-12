@@ -12,8 +12,8 @@ job=form.getvalue('job')
 
 def head():
 
-	print"""
-		Content-Type:text/html\n\n
+	print "Content-Type:text/html\n\n"
+	print """
 		<html>
 
 		<head>
@@ -24,7 +24,7 @@ def head():
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
         	        <p align="left">
 		"""
-	print "	%s <br> %s <br>	", name, job
+	print "%s <br> %s <br> ", name, job
 
 	print """
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
@@ -49,6 +49,7 @@ def form():
 			Update status: 
 		</b></font>
 		<input type="text" name="status" width="48" height="30">
+		<input type="hidden" name="username" value="username"
 		<input type="submit" value="Post">
 		</form>
 	
@@ -59,11 +60,11 @@ def form():
 
 def statuses():
 	
-	s=open("status.txt")
-	f=open("friends.txt")
+	s=open("status.txt","r")
+	f=open("friends.txt","r")
 			
-	statuses=s.read().splitlines()
-	friends=f.read().splitlines()
+	statuses=s.readlines()
+	friends=s.readlines()
 	"""open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself)""" 
 
 	for i, elem in enumerate(friends):

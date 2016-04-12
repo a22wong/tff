@@ -7,7 +7,7 @@ form=cgi.FieldStorage()
 
 f=open(status.txt, 'a')
 
-if(form["status"]:
-	f.write("username "+"status")
+if form["status"]:
+	f.write("username "+"status\n")
 	
 
