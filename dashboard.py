@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import cgi, cgitb
+import cgi, cgitb, os
 
 cgitb.enable()
 
@@ -71,14 +71,19 @@ def statuses():
 	#open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself) 
 
 	for i, elem in enumerate(friends):
-		if friends[i].split()[0]=username:
+		if friends[i].split(" ")[0]=username:
 			fr=friends[i]
 			break
 	
-	while i<20:
-		if statuses.split()[0] in fr.split():
-			print """#format status in html"""
-			i++	
+	while i<20 or elem in enumerate statuses:
+		if statuses[i].split(" ")[0] in fr.split():
+			un=statuses[i].split(" ").pop
+			stat=statuses[i].split(" ")
+			print """
+				<font face="Arial Rounded MT Bold" color="2340FA" size="3">
+				<p>"""
+			print "%s: %s </p> ", un, join(map(str, stat))
+			i+=1	
 
 
 #main method
@@ -86,4 +91,6 @@ if __name__="__main__":
 	try:
 		head()
 		form()
-		
+		statuses()
+	except: 
+		cgi.print_exception()	
