@@ -40,7 +40,7 @@
 		<!-- form asks user for full name, job description, desired username and pasword -->
 		<form action="../cgi-bin/register.cgi" method="post" id="usrform"> 
 		    <input type="text" name="fullname" placeholder="eg. Buckship Fozket"><br><br>
-		    <textarea rows="4" cols="50" name="job" form="usrform">Describe your occupation in less than 250 characters...</textarea><br><br>
+		    <textarea rows="4" cols="50" name="job" form="usrform" placeHolder="Describe your occupation in less than 250 characters..." maxlength="250"></textarea><br><br>
 		    <input type="text" name="user" placeholder="Create a Username..." maxlength="30">
 		    <input type="password" name="pass" placeholder="New Password" maxlength="30">
 		    <input type="submit" name="register" class="register register-submit" value="register">
