@@ -31,11 +31,11 @@ def head():
 	print """
 	<font face="Arial Rounded MT Bold" color="2340FA" size="3">
 		<p align="right">
-		<a href="../tff/makefriend.html">
+		<a href="../tff/makefriend.py">
                         Make a Friend
                 </a>
 		&emsp;
-		<a href="../tff/seefriend.html">
+		<a href="../tff/seefriend.py">
                         See a Friend
                 </a>
 		&emsp;
@@ -59,11 +59,26 @@ def form():
 
 
 	</body>
-</html>"""
+	</html>"""
 
 def statuses():
+	
+	s=open("status.txt")
+	f=open("friends.txt")
+			
+	statuses=s.read().splitlines()
+	friends=f.read().splitlines()
+	#open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself) 
 
-
+	for i, elem in enumerate(friends):
+		if friends[i].split()[0]=username:
+			fr=friends[i]
+			break
+	
+	while i<20:
+		if statuses.split()[0] in fr.split():
+			print """#format status in html"""
+			i++	
 
 
 #main method
