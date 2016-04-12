@@ -13,37 +13,35 @@ job=form.getvalue('job')
 def head():
 
 	print"""
-	Content-Type:text/html\n\n
-	<html>
+		Content-Type:text/html\n\n
+		<html>
 
-	<head>
-		<title> tff Dashboard </title> 
-	</head>
+		<head>
+			<title> tff Dashboard </title> 
+		</head>
 
-	<body bgcolor="ECFAFF">
-	<font face="Arial Rounded MT Bold" color="2340FA" size="3">
-                <p align="left">
-	"""
-	print "
-	%s <br> %s <br>
-	", name, job
+		<body bgcolor="ECFAFF">
+		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
+        	        <p align="left">
+		"""
+	print "	%s <br> %s <br>	", name, job
 
 	print """
-	<font face="Arial Rounded MT Bold" color="2340FA" size="3">
-		<p align="right">
-		<a href="../tff/makefriend.py">
-                        Make a Friend
-                </a>
-		&emsp;
-		<a href="../tff/seefriend.py">
-                        See a Friend
-                </a>
-		&emsp;
-		<a href="../tff/index.html">
-                        Logout
-                </a>
-		</p>
-	"""
+		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
+			<p align="right">
+			<a href="../tff/makefriend.py">
+                	        Make a Friend
+              		 </a>
+			&emsp;
+			<a href="../tff/seefriend.py">
+                	        See a Friend
+               		 </a>
+			&emsp;
+			<a href="../tff/index.html">
+                	        Logout
+          	      </a>
+			</p>
+		"""
 def form():
 	print """ <center><form name="status" action="status.py" method="get">
 
@@ -52,14 +50,14 @@ def form():
 		</b></font>
 		<input type="text" name="status">
 		<input type="submit" value="Post">
-	</form></center>
+		</form></center>
 	
-	<br><br>
+		<br><br>
 	
 
 
-	</body>
-	</html>"""
+		</body>
+		</html>"""
 
 def statuses():
 	
