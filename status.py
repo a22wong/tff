@@ -1,9 +1,13 @@
 #!/usr/bin/python
 
-import cgi
+import cgi, cgitb
+cgitb.enable()
 
 form=cgi.FieldStorage()
 
-if(form.has_key("status"):
-  with open("status", "a") as myfile:
-    myfile.write("username "+"status")
+f=open(status.txt, 'a')
+
+if form["status"]:
+	f.write("username "+"status\n")
+	
+
