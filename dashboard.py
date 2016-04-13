@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import cgi, cgitb, os
+import cgi, cgitb
 
 cgitb.enable()
 
@@ -24,7 +24,7 @@ def head():
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
         	        <p align="left">
 		"""
-	print "%s <br> %s <br> ", name, job
+	print "%s <br> %s <br> ", % name, job
 
 	print """
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
