@@ -1,67 +1,137 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
-#define FDATA "./users.txt"
-#define MAX 250
-//psuedo structure of the login.c file
-/* 
-possible errors:
-	1. non-existant username
-		-parses through users.txt checks input against each 'username' returns
-		 error1 if no match, else returns true
-	2. incorrect password
-		-if username matches(username returns true)  check if passward matches
-		 the username. if no match return error2, else return true
+#define DATA "./users.txt"
+#define MAX 50
 
-A. Unsuccessfull Login (returned error1 or error2)
-display errors 1 or 2:
-	i. link to login page
-	ii. link to landing page
-B. Successfull Login (returned no errors)
-	i. generates user's dashboard page
-*/
+/* compare two strings (case sensitive) */
+int mystrcmp(char *a, char *b) {
+        for ( ; ; a++, b++) {
+                int d = *a - *b;
+                if (d != 0 || !*a) return d;
+        }
+}
 
-//int isValidUser(char *usrname);
-//int passMatches(char *pass, char *validname);
+/* retrive a line from a file */
+void myfgets(char array[], int limit, FILE *p) {
+        int i=0,c;
+        if (p==NULL) { array[0]='\0'; return; }
+
+        c=fgetc(p);
+        while(!feof(p) && c != '\n' && i<limit) {
+                array[i]=c; i++;
+                c=fgetc(p);
+        }
+        if (i<limit) array[i]='\0'; else array[limit-1]='\0';
+}
+
+/* decode qeurystring */
+void unencode(char *src, char *last, char *dest) {
+	for( ; src != last; src++, dest++)
+		if (*src == '+' )
+			*dest = ' ';
+		else if (*src == '%') {
+			int code;
+     			if (sscanf(src+1, "%2x", &code) != 1) code = '?';
+     			*dest = code;
+     			src += 2; 
+		} else
+     			*dest = *src;
+	*dest = '\n';
+	*++dest = '\0';
+}
+
+/* check if username exists in user logfile */
+int findUser(char *uname, FILE *p) {
+        int count = 0,i;
+        char *f_uname = (char *)malloc(sizeof(char)*MAX);
+
+        for (i=0;i<3;i++) { myfgets(f_uname,MAX-1,p); }
+        while (!feof(p)) {
+                if (!mystrcmp(uname,f_uname))
+                        return count;
+                for (i=0;i<4;i++) { myfgets(f_uname,MAX-1,p); }
+                count=count+4;
+        }
+        return 0;
+}
+
+/* check if password matches the existing username */
+int passMatch(char *pass, int line, FILE *p) {
+        int i;
+        char *f_pass = (char *)malloc(sizeof(char)*MAX);
+
+        myfgets(f_pass,MAX-1,p);
+        if (!mystrcmp(pass,f_pass)) return 1;
+        else return 0;
+}
+
+/* print login success */
+void printSuccess() {
+        printf("<head><title> Login Success </title><head>"
+        "<body>"
+        "<a href='./cgi-bin/dashboard.py'>temp link</a>");
+}
+
+/* print login password failure */
+void printPFailure() {
+        printf("<head><title> Login Failure </title></head>"
+        "<body>"
+        "<p>Log into Tinder for Friends"
+        "<p>The password you provided was incorrect."
+        "<a href='./login.html'>Try Again</a>"
+        "<a href='./index.html'>Return to Welcome Page</a>");
+}
+
+/* print login username failure */
+void printUFailure() {
+        printf("<head><title> Login Failure </title></head>"
+        "<body>"
+        "<p>Log into Tinder for Friends"
+        "<p>The Username you provided does not match!"
+        "<a href='./login.html'>Try Again</a>"
+        "<a href='./index.html'>Return to Welcome Page</a>");
+}
+
 
 int main(int argc, char *argv[]) {
-
+	/* Begin HTML script */
 	printf("Content-Type: text/html\n\n"
-	"<html><head><title> Login </title></head>"
-	"<body>");
-	
-//	int i;	
-//	FILE *p;
-//	char *fline;
-//	fline = (char *)malloc(sizeof(char)*MAX);
-//	char *input;
-//	input = getenv("QUERY_STRING");
-//
-//	p = fopen(FDATA,"r");
-//	if (p == NULL) {
-//		printf("ERROR: Unable to open file\n");
-//		return 2;
-//	}
+	"<html>");
 
-//	for (i=0;i<3;i++) { myfgets(fline,MAX-1,p); }
-//	while (!feof(p)) {
-//		/* parse through the file to check that username exists */
-//		if (  ) {
-//			return 1;
-//		} else {
-//			/* read the next line to check if password matches that users password */
-//			if (/* if inputpassword doesn't match filepassword  */) {
-//				return 2;
-//			} else {
-//				/* login successful: printf html login page. */
-//				printf("login successfull\n");
-//			}
-//		}
-//	}
-//	fclose(p);
+	/* open user logfile for reading, if unsuccessfull open throw error message */
+	FILE *fp;
+	fp=fopen(DATA,"r");
+	if (fp==NULL) { printf("ERROR CANNOT OPEN USER LOG\n"); return 1; }
+
+	/* retrive information from html form */
+	char *uname = (char *)malloc(sizeof(char)*MAX);
+	char *pass = (char *)malloc(sizeof(char)*MAX);
+//	char *data = (char *)malloc(sizeof(char)*MAX);
+//	char *userinput = getenv("QUERY_STRING");
+//	if (userinput==NULL) { printf("ERROR CANNOT RETRIEVE USER INPUT\n"); return 2; }
+//	unencode(userinput, userinput+(int)strlen(userinput),data);
+//	sscanf(data,"user=%s",uname);
+//	sscanf(data,"pass=%s",pass);
+
+	/* If given username is found in user log and if the password matches, login in successfull */
+	int line = findUser(uname, fp);
+	if (line) {
+		int match = passMatch(pass,line,fp);
+		if (match) {
+			printSuccess();
+		} else {
+			printPFailure();
+		}
+	} else {
+		printUFailure();
+	}
+
+	fclose(fp);
 
 	printf("<a href='./dashboard.py'>text</a> ");
+	/* End HTML script */
 	printf("</body></html>");
-
 	return 0;
 }
