@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define DATA "./users.txt"
+#define DATA "../users.txt"
 #define MAX 50
 
 /* compare two strings (case sensitive) */
@@ -29,7 +29,7 @@ void myfgets(char array[], int limit, FILE *p) {
 /* decode qeurystring */
 void unencode(char *src, char *last, char *dest) {
 	for( ; src != last; src++, dest++)
-		if (*src == '+' )
+		if (*src == '+' || *src == '&' )
 			*dest = ' ';
 		else if (*src == '%') {
 			int code;
@@ -69,9 +69,11 @@ int passMatch(char *pass, int line, FILE *p) {
 
 /* print login success */
 void printSuccess() {
-        printf("<head><title> Login Success </title><head>"
+        printf("<head>"
+//	"<meta http-equiv='refresh' content=\"0; url='../dashboard.html'/>"
+	"<title> Login Success </title><head>"
         "<body>"
-        "<a href='./cgi-bin/dashboard.py'>temp link</a>");
+	"<a href='./dashboard.py'>link to dashboard</a>");
 }
 
 /* print login password failure */
@@ -79,9 +81,9 @@ void printPFailure() {
         printf("<head><title> Login Failure </title></head>"
         "<body>"
         "<p>Log into Tinder for Friends"
-        "<p>The password you provided was incorrect."
-        "<a href='./login.html'>Try Again</a>"
-        "<a href='./index.html'>Return to Welcome Page</a>");
+        "<p>The password you provided was incorrect.<br>"
+        "<a href='../login.html'>Try Again</a><br>"
+        "<a href='../index.html'>Return to Welcome Page</a>");
 }
 
 /* print login username failure */
@@ -89,9 +91,9 @@ void printUFailure() {
         printf("<head><title> Login Failure </title></head>"
         "<body>"
         "<p>Log into Tinder for Friends"
-        "<p>The Username you provided does not match!"
-        "<a href='./login.html'>Try Again</a>"
-        "<a href='./index.html'>Return to Welcome Page</a>");
+        "<p>The Username you provided does not match!<br>"
+        "<a href='../login.html'>Try Again</a><br>"
+        "<a href='../index.html'>Return to Welcome Page</a><br>");
 }
 
 
@@ -106,14 +108,18 @@ int main(int argc, char *argv[]) {
 	if (fp==NULL) { printf("ERROR CANNOT OPEN USER LOG\n"); return 1; }
 
 	/* retrive information from html form */
+	char *userinput = (char *)malloc(sizeof(char)*MAX);
+	char *data = (char *)malloc(sizeof(char)*MAX);
 	char *uname = (char *)malloc(sizeof(char)*MAX);
 	char *pass = (char *)malloc(sizeof(char)*MAX);
-//	char *data = (char *)malloc(sizeof(char)*MAX);
-//	char *userinput = getenv("QUERY_STRING");
-//	if (userinput==NULL) { printf("ERROR CANNOT RETRIEVE USER INPUT\n"); return 2; }
-//	unencode(userinput, userinput+(int)strlen(userinput),data);
-//	sscanf(data,"user=%s",uname);
-//	sscanf(data,"pass=%s",pass);
+	char *endp;
+	
+	char *lenstr = getenv("CONTENT_LENGTH");
+	int len = strtol(lenstr,&endp,10);
+	fread(userinput, len, 1, stdin);
+	if (userinput==NULL) { printf("ERROR CANNOT RETRIEVE USER INPUT\n"); return 2; }
+	unencode(userinput, userinput+len, data);
+	sscanf(data, "user=%s pass=%s", uname, pass);
 
 	/* If given username is found in user log and if the password matches, login in successfull */
 	int line = findUser(uname, fp);
@@ -130,7 +136,6 @@ int main(int argc, char *argv[]) {
 
 	fclose(fp);
 
-	printf("<a href='./dashboard.py'>text</a> ");
 	/* End HTML script */
 	printf("</body></html>");
 	return 0;
