@@ -42,7 +42,7 @@ void unencode(char *src, char *last, char *dest) {
 	*++dest = '\0';
 }
 
-/* check if username exists in user logfile */
+/* check if username exists in user logfile, returns line number it is found on */
 int findUser(char *uname, FILE *p) {
         int count = 0,i;
         char *f_uname = (char *)malloc(sizeof(char)*MAX);
@@ -68,12 +68,14 @@ int passMatch(char *pass, int line, FILE *p) {
 }
 
 /* print login success */
-void printSuccess() {
+void printSuccess(char *uname) {
         printf("<head>"
 //	"<meta http-equiv='refresh' content=\"0; url='../dashboard.html'/>"
 	"<title> Login Success </title><head>"
         "<body>"
-	"<a href='./dashboard.py'>link to dashboard</a>");
+	"<form>"
+	"<input type='hidden' name='username' value='%s'></form>"
+	"<a href='./dashboard.py'>link to dashboard</a>", uname);
 }
 
 /* print login password failure */
@@ -126,14 +128,13 @@ int main(int argc, char *argv[]) {
 	if (line) {
 		int match = passMatch(pass,line,fp);
 		if (match) {
-			printSuccess();
+			printSuccess(uname);
 		} else {
 			printPFailure();
 		}
 	} else {
 		printUFailure();
 	}
-
 	fclose(fp);
 
 	/* End HTML script */
