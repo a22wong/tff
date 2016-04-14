@@ -7,7 +7,8 @@ cgitb.enable()
 form=cgi.FieldStorage()
 
 name=form.getvalue('fullname')
-username=form.getvalue('username')
+#username=form.getvalue('username')
+username="nasty"
 job=form.getvalue('job')
 
 def head():
@@ -24,7 +25,8 @@ def head():
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
         	        <p align="left">
 		"""
-	print "%s <br>%s <br> ", name, job
+	print "name"
+	print "job"
 
 	print """
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
@@ -37,7 +39,7 @@ def head():
                 	        See Friends
                		 </a>
 			&emsp;
-			<a href="../tff/index.html">
+			<a href="../index.html">
                 	        Logout
           	      </a>
 			</p>
@@ -63,26 +65,42 @@ def statuses():
 	f=open("../friends.txt","r")
 			
 	statuses=s.readlines()
-	friends=s.readlines()
-	"""open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself)""" 
+	friends=f.readlines()
+	#for i, elem in enumerate(friends):
+	#	print friends[i]
+	#for i, elem in enumerate(statuses):
+	#	print statuses[i]
 
+	"""open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself)""" 
+	
 	for i, elem in enumerate(friends):
 		if friends[i].split(" ")[0]==username:
 			fr=friends[i]
 			break
-	
-	while i<20 or elem in enumerate(statuses):
-		if statuses[i].split(" ")[0] in fr.split():
-			un=statuses[i].split(" ").pop
-			stat=statuses[i].split(" ")
-			print """
-				<font face="Arial Rounded MT Bold" color="2340FA" size="3">
-				<p>"""
-			print "%s: %s </p> ", un, join(map(str, stat))
-			i+=1	
+
+	if len(statuses)>20:
+		for i in range (0, 20):
+			if statuses[i].split(" ")[0] in fr.split():
+				un=statuses[i].split(" ").pop
+				stat=statuses[i].split(" ")
+				print """
+					<font face="Arial Rounded MT Bold" color="2340FA" size="3">
+					<p>"""
+				print "%s: %s </p> ", un, join(map(str, stat))
+	else:
+		for i, elem in enumerate(statuses):	
+			if statuses[i].split(" ")[0] in fr.split():
+                                un=statuses[i].split(" ").pop()
+                                stat=statuses[i].split(" ")
+                                print """
+                                        <font face="Arial Rounded MT Bold" color="2340FA" size="3">
+                                        <p>"""
+                                print "un"
+				print ' '.join(stat)
 	print """</body>
 		</html>
 		"""
+
 	s.close()
 	f.close()
 #main method
