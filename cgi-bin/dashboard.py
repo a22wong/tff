@@ -56,6 +56,7 @@ def form():
 		<input type="text" name="status" width="48" height="30">
 	
 		<input type="submit" value="Post">
+		<input type="hidden" name="username" value="username"
 		</form>
 	
 		<br><br>
