@@ -24,17 +24,17 @@ def head():
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
         	        <p align="left">
 		"""
-	print "%s <br> %s <br> ", % name, job
+	print "%s <br>%s <br> ", name, job
 
 	print """
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
 			<p align="right">
-			<a href="../tff/makefriend.py">
-                	        Make a Friend
+			<a href="./makefriends.py">
+                	        Make Friends
               		 </a>
 			&emsp;
-			<a href="../tff/seefriend.py">
-                	        See a Friend
+			<a href="./seefriends.cgi">
+                	        See Friends
                		 </a>
 			&emsp;
 			<a href="../tff/index.html">
@@ -43,36 +43,35 @@ def head():
 			</p>
 		"""
 def form():
-	print """ <form name="status" action="status.py" method="get">
+	print """ <form name="status" action="status.py" method="post">
 
 		<font face="Arial Rounded MT Bold" color="FF846A" size="4"><b>
 			Update status: 
 		</b></font>
 		<input type="text" name="status" width="48" height="30">
-		<input type="hidden" name="username" value="username"
+	
 		<input type="submit" value="Post">
 		</form>
 	
 		<br><br>
 	
-		</body>
-		</html>"""
+		"""
 
 def statuses():
 	
-	s=open("status.txt","r")
-	f=open("friends.txt","r")
+	s=open("../status.txt","r")
+	f=open("../friends.txt","r")
 			
 	statuses=s.readlines()
 	friends=s.readlines()
 	"""open files. display only statuses of friends of USERNAME. do this by parsing by line with splitlines(). add friends(tokenize w/ space) to variables. for all lines in statuses, print only if username is one of friends variables(includeing themself)""" 
 
 	for i, elem in enumerate(friends):
-		if friends[i].split(" ")[0]=username:
+		if friends[i].split(" ")[0]==username:
 			fr=friends[i]
 			break
 	
-	while i<20 or elem in enumerate statuses:
+	while i<20 or elem in enumerate(statuses):
 		if statuses[i].split(" ")[0] in fr.split():
 			un=statuses[i].split(" ").pop
 			stat=statuses[i].split(" ")
@@ -81,10 +80,13 @@ def statuses():
 				<p>"""
 			print "%s: %s </p> ", un, join(map(str, stat))
 			i+=1	
-
-
+	print """</body>
+		</html>
+		"""
+	s.close()
+	f.close()
 #main method
-if __name__="__main__":
+if __name__=="__main__":
 	try:
 		head()
 		form()
