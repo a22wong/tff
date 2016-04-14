@@ -6,10 +6,12 @@ cgitb.enable()
 
 form=cgi.FieldStorage()
 
-name=form.getvalue('fullname')
+#name=form.getvalue('fullname')
+name="anna"
 #username=form.getvalue('username')
 username="nasty"
-job=form.getvalue('job')
+#job=form.getvalue('job')
+job="i make doors"
 
 def head():
 
@@ -25,8 +27,9 @@ def head():
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
         	        <p align="left">
 		"""
-	print "name"
-	print "job"
+	print "", name
+	print "<br>"
+	print "", job
 
 	print """
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
@@ -77,25 +80,31 @@ def statuses():
 		if friends[i].split(" ")[0]==username:
 			fr=friends[i]
 			break
-
+	
 	if len(statuses)>20:
 		for i in range (0, 20):
 			if statuses[i].split(" ")[0] in fr.split():
-				un=statuses[i].split(" ").pop
-				stat=statuses[i].split(" ")
-				print """
-					<font face="Arial Rounded MT Bold" color="2340FA" size="3">
-					<p>"""
-				print "%s: %s </p> ", un, join(map(str, stat))
-	else:
-		for i, elem in enumerate(statuses):	
-			if statuses[i].split(" ")[0] in fr.split():
-                                un=statuses[i].split(" ").pop()
-                                stat=statuses[i].split(" ")
+				line=statuses[i].split(" ")
+                                un=line[0]
+                                line.remove(line[0])
+                                stat=line
                                 print """
                                         <font face="Arial Rounded MT Bold" color="2340FA" size="3">
                                         <p>"""
-                                print "un"
+                                print "", un
+                                print ' '.join(stat)
+
+	else:
+		for i, elem in enumerate(statuses):	
+			if statuses[i].split(" ")[0] in fr.split():
+				line=statuses[i].split(" ")
+                                un=line[0]
+				line.remove(line[0])
+                                stat=line
+                                print """
+                                        <font face="Arial Rounded MT Bold" color="2340FA" size="3">
+                                        <p>"""
+                                print "", un
 				print ' '.join(stat)
 	print """</body>
 		</html>
