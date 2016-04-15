@@ -7,16 +7,23 @@ def head():
 	print """
 		<!DOCTYPE html>
 		<html>
-			<a href="./dashboard.py">Return to Dashboard</a>
+			<a href="./dashboard.py">Return to Dashboard</a><br>
+		"""
+	print hasFriend("nasty", "cohny")
+	print """
 		</html>
 		"""
-
 def addFriend():
+	return 0
 
-def hasFriend(user, friend): #checks if user already has friend
+def hasFriend(user, friend):
 	FILE = open('../friends.txt', 'r')
-	f = FILE.getline()
-	for user in f
+	for f in FILE:
+		tokens = f.split()
+		if user == tokens[0]:
+			for tok in tokens:
+				if friend == tok: return 1
+	return 0
 try:
 	head()
 except:
