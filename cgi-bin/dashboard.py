@@ -6,7 +6,7 @@ cgitb.enable()
 
 form=cgi.FieldStorage()
 
-username=form.getvalue('username')
+username=form.getvalue("username")
 
 def head():
 

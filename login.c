@@ -76,15 +76,15 @@ char *getInfo(char *src, int n) {
 }
 
 /* print login success */
-void printSuccess(char *uname, char *pass) {
+void printSuccess(char *uname) {
 	printf("<head>"
-	"<meta http-equiv='refresh' content=\"0;url=./dashboard.py\">"
+	//"<meta http-equiv='refresh' content=\"0;url=./dashboard.py\">"
 	" <title> Login Success </title> </head>"
 	"<body>"
 	"<form action='./dashboard.py' method='post'>"
-	"	<input type='hidden' name='hiddenuname' value='%s'>"
-	"	<input type='hidden' name='hiddenpass' value='%s'>"
-	"</form>", uname, uname, pass);
+	"	<input type='submit' name='Go to Dashboard' value='Go to Dashboard'>"
+	"	<input type='hidden' name='username' value='%s'>"
+	"</form>", uname);
 }
 
 /* print login password failure */
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
 	if (line != -1) {
 		int match = passMatch(pass,line,fp);
 		if (match) {
-			printSuccess(uname, pass);
+			printSuccess(uname);
 		} else {
 			printPFailure();
 		}
