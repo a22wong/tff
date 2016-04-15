@@ -3,7 +3,8 @@
 #include<string.h>
 
 #define DATA "../users.txt"
-#define MAX 50
+#define QLEN atoi(getenv("CONTENT_LENGTH")) /* defines a max length for 'query string' */
+#define VLEN QLEN-10 /* defines a max length for any variable value in 'query string' */
 
 /* compare two strings (case sensitive) */
 int mystrcmp(char *a, char *b) {
@@ -26,45 +27,52 @@ void myfgets(char array[], int limit, FILE *p) {
         if (i<limit) array[i]='\0'; else array[limit-1]='\0';
 }
 
-/* decode qeurystring */
-void unencode(char *src, char *last, char *dest) {
-	for( ; src != last; src++, dest++)
-		if (*src == '+' || *src == '&' )
-			*dest = ' ';
-		else if (*src == '%') {
-			int code;
-     			if (sscanf(src+1, "%2x", &code) != 1) code = '?';
-     			*dest = code;
-     			src += 2; 
-		} else
-     			*dest = *src;
-	*dest = '\n';
-	*++dest = '\0';
-}
-
 /* check if username exists in user logfile, returns line number it is found on */
 int findUser(char *uname, FILE *p) {
         int count = 0,i;
-        char *f_uname = (char *)malloc(sizeof(char)*MAX);
+        char *f_uname = (char *)malloc(sizeof(char)*VLEN);
 
-        for (i=0;i<3;i++) { myfgets(f_uname,MAX-1,p); }
+        myfgets(f_uname,VLEN-1,p);
         while (!feof(p)) {
                 if (!mystrcmp(uname,f_uname))
                         return count;
-                for (i=0;i<4;i++) { myfgets(f_uname,MAX-1,p); }
+                for (i=0;i<4;i++) { myfgets(f_uname,VLEN-1,p); }
                 count=count+4;
         }
-        return 0;
+        return -1;
 }
 
 /* check if password matches the existing username */
 int passMatch(char *pass, int line, FILE *p) {
         int i;
-        char *f_pass = (char *)malloc(sizeof(char)*MAX);
+        char *f_pass = (char *)malloc(sizeof(char)*VLEN);
 
-        myfgets(f_pass,MAX-1,p);
+        myfgets(f_pass,VLEN-1,p);
         if (!mystrcmp(pass,f_pass)) return 1;
         else return 0;
+}
+
+/* retrieve a specific word from a string */
+char *getInfo(char *src, int n) {
+        int i=0;
+        char *dest = (char *)malloc(sizeof(char)*VLEN);
+        char *p;
+
+        p = src+n;
+        while ( *p != '&' ) {
+                if ( *p == '+' ) {
+                        dest[i] = ' ';
+                        p++; i++;
+                } else if ( *p == '%' ) {
+			int code;
+			if (sscanf(p+1, "%2x", &code) != 1) code = '?';
+			dest[i] = code;
+			p += 2; i++;
+		} 
+                dest[i] = *p;
+                p++; i++;
+        }
+        return dest;
 }
 
 /* print login success */
@@ -93,7 +101,7 @@ void printUFailure() {
         printf("<head><title> Login Failure </title></head>"
         "<body>"
         "<p>Log into Tinder for Friends"
-        "<p>The Username you provided does not match!<br>"
+        "<p>The Username you provided does not exist!<br>"
         "<a href='../login.html'>Try Again</a><br>"
         "<a href='../index.html'>Return to Welcome Page</a><br>");
 }
@@ -107,25 +115,26 @@ int main(int argc, char *argv[]) {
 	/* open user logfile for reading, if unsuccessfull open throw error message */
 	FILE *fp;
 	fp=fopen(DATA,"r");
-	if (fp==NULL) { printf("ERROR CANNOT OPEN USER LOG\n"); return 1; }
+	if (fp==NULL) { 
+	//printf("ERROR CANNOT OPEN USER LOG\n");
+		printUFailure();
+	 	return 1; 
+	}
 
 	/* retrive information from html form */
-	char *userinput = (char *)malloc(sizeof(char)*MAX);
-	char *data = (char *)malloc(sizeof(char)*MAX);
-	char *uname = (char *)malloc(sizeof(char)*MAX);
-	char *pass = (char *)malloc(sizeof(char)*MAX);
-	char *endp;
-	
-	char *lenstr = getenv("CONTENT_LENGTH");
-	int len = strtol(lenstr,&endp,10);
-	fread(userinput, len, 1, stdin);
-	if (userinput==NULL) { printf("ERROR CANNOT RETRIEVE USER INPUT\n"); return 2; }
-	unencode(userinput, userinput+len, data);
-	sscanf(data, "user=%s pass=%s", uname, pass);
+	char *userinput = (char *)malloc(sizeof(char)*QLEN);
+	fread(userinput, QLEN, 1, stdin);
+	if (userinput == NULL) { printf("<p>ERROR CANNOT RETRIEVE USERINPUT\n"); return 2; }
+
+	/* pull username and password from userinput */
+	char *uname = getInfo(userinput, 5); /* retrieve username */
+	char *data = strstr(userinput, "pass");
+	char *pass = getInfo(data, 5); /* retrieve password */
+
 
 	/* If given username is found in user log and if the password matches, login in successfull */
 	int line = findUser(uname, fp);
-	if (line) {
+	if (line != -1) {
 		int match = passMatch(pass,line,fp);
 		if (match) {
 			printSuccess(uname);
