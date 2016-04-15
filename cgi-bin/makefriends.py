@@ -46,7 +46,7 @@ def head():
 			</center></body>
 		</html>
 		"""
-
+	f.close()
 #main
 try:
 	head()
