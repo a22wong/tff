@@ -10,6 +10,7 @@ def head():
 	print "Content-Type:text/html\n\n"
 	#print headers
 	print """
+		<!DOCTYPE html>
 		<html>
 			<head>
 				<title>Make a Friend!</title>
@@ -21,23 +22,25 @@ def head():
 	FILE=open('../users.txt', 'r')
 	
 	#loop through users.txt
-	i=4
+	i=0
+	j=2
+	print """<form action='newfriends.py'>"""
 	for line in FILE:
-		
+		#store username and full name
 		if (i%4) == 0:
+                        uName=line
+                if (j%4) == 0:
+                        fName=line
+			#print form
 			print """
-				<form action='newfriends.py'>
 					<input type="checkbox" name="newfriend" value="
 				"""
+			print uName, """ "> """, fName, ":", uName, "<br>"
 			
-			#print each username
-			print line, """ "> """, line, "<br>"
-			
-			#close form
-			print """
-				</form>
-				"""
 		i+=1
+		j+=1
+	print """<input type="submit" value="Submit">"""
+	print "</form>"
 	#print bottom of html	
 	print """
 			</center></body>
