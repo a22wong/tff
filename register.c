@@ -89,40 +89,43 @@ int main(void) {
 	printf("Content-Type: text/html\n\n"
 	"<html>");
 
-	/*  open user logfile for reading and appending, if unsuccessfull throw error meesage */
-	FILE *fp;
-	fp=fopen(DATA,"a+");
-	if (fp == NULL) { printf("<p>ERROR CANNOT OPEN USER LOG\n"); return 1; }
+      	/* retrieve information from html form */
+      	char *userinput = (char *)malloc(sizeof(char)*QLEN);
+      	fread(userinput, QLEN, 1, stdin);
+      	if (userinput == NULL) { printf("ERROR CANNOT RETRIVE USER INPUT\n"); return 2; }
 
-	/* retrieve information from html form */
-	char *userinput = (char *)malloc(sizeof(char)*QLEN);
-	fread(userinput, QLEN, 1, stdin);
-	if (userinput == NULL) { printf("ERROR CANNOT RETRIVE USER INPUT\n"); return 2; }
+        /* pull fullname, job despription, username and password from userinput */
+      	char *fname = getInfo(userinput, 9); 		/* retrieves fullname */
+      	char *data = strstr(userinput, "job");
+      	char *djob = getInfo(data, 4); 			/* retrieves job description */
+      	data = strstr(userinput, "user");
+      	char *uname = getInfo(data, 5); 		/* retrieves username */
+      	data = strstr(userinput, "pass");
+      	char *pass = getInfo(data, 5); 			/* retrieves password */
+	
+	/* allocate memory */
+	int r_user;
+	double *ptr_d;
+	FILE *ptr_fp;
 
-	/* pull fullname, job despription, username and password from userinput */
-	char *fname = getInfo(userinput, 9); /* retrieves fullname */
+	ptr_d = (double *)malloc(BUFSIZ*sizeof(double));
+	if (!ptr_d) { printf("(1) MEMORY ALLOCATION ERROR<br>"); return 1; }
 
-	char *data = strstr(userinput, "job");
-	char *djob = getInfo(data, 4); /* retrieves job description */
+	/* open user log file for reading */
+	if ((ptr_fp = fopen(DATA,"a+")) == NULL) { printf("(2) ERROR UNABLE TO OPEN %s<br>", DATA); return 2; }
 
-	data = strstr(userinput, "user");
-	char *uname = getInfo(data, 5); /* retrieves username */
-
- 	data = strstr(userinput, "pass");
-	char *pass = getInfo(data, 5); /* retrieves password */
-
-	/* If username is not found in user logfile then create user profile */
-	int match = findUser(uname, fp);
+	int match = findUser(uname, ptr_fp);
 	if (match == -1) {
-		fprintf(fp, "%s\n", uname);
-		fprintf(fp, "%s\n", pass);
-		fprintf(fp, "%s\n", fname);
-		fprintf(fp, "%s\n", djob);
+		fprintf(ptr_fp, "%s\n", uname);
+		fprintf(ptr_fp, "%s\n", pass);
+		fprintf(ptr_fp, "%s\n", fname);
+		fprintf(ptr_fp, "%s\n", djob);
 		printSuccess();
 	} else {
 		printFailure();
 	}
-        fclose(fp);
+	close(ptr_fp);
+	free(ptr_d);
 
 	/* End registration html */
 	printf("</body></html>");

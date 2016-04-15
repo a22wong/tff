@@ -77,13 +77,13 @@ char *getInfo(char *src, int n) {
 
 /* print login success */
 void printSuccess(char *uname, char *pass) {
-	printf("<head> <title> Login Success </title> </head>"
+	printf("<head>"
+	"<meta http-equiv='refresh' content=\"0;url=./dashboard.py\">"
+	" <title> Login Success </title> </head>"
 	"<body>"
-	"<h1>Welcome %s!</h1>"
 	"<form action='./dashboard.py' method='post'>"
 	"	<input type='hidden' name='hiddenuname' value='%s'>"
 	"	<input type='hidden' name='hiddenpass' value='%s'>"
-	"	<input type='button' onclick='./dashboard.py' value='go to your page'"
 	"</form>", uname, uname, pass);
 }
 
