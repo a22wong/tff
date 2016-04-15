@@ -4,7 +4,6 @@ import cgi, cgitb
 cgitb.enable()
 
 form=cgi.FieldStorage()
-
 def head():
 
 	print "Content-Type:text/html\n\n"
@@ -24,7 +23,7 @@ def head():
 	#loop through users.txt
 	i=0
 	j=2
-	print """<form action='newfriends.py'>"""
+	print """<form action="newfriends.py" method="post">"""
 	for line in FILE:
 		#store username and full name
 		if (i%4) == 0:
@@ -40,13 +39,14 @@ def head():
 		i+=1
 		j+=1
 	print """<input type="submit" value="Submit">"""
+	print """<input type="hidden" name="username" value="username">"""
 	print "</form>"
 	#print bottom of html	
 	print """
 			</center></body>
 		</html>
 		"""
-	f.close()
+	FILE.close()
 #main
 try:
 	head()

@@ -1,6 +1,10 @@
 #!/usr/bin/python
 
 import cgi, cgitb
+form = cgi.FieldStorage()
+newFriends = form.getlist("newfriends")
+#currUser = form.getvalue("username")
+currUser = "wongy"
 
 def head():
 	print "Content-Type:text/html\n\n"
@@ -9,22 +13,37 @@ def head():
 		<html>
 			<a href="./dashboard.py">Return to Dashboard</a><br>
 		"""
-	print hasFriend("nasty", "cohny")
+	for friend in form.getlist("newfriend"):
+		print "Adding: ", friend, "<br>"
+		addFriend(currUser, friend)
 	print """
 		</html>
 		"""
-def addFriend():
-	return 0
+
+def addFriend(user, friend):
+	if hasFriend(user, friend) == 0:
+		FILE = open('../friends.txt', 'r+')
+		for line in FILE:
+			if user == line.split(" ")[0]:
+				print "Appending: ", friend, "<br>"
+				newLine = ' '.join([line.strip('^M'), friend])
+				print "Writing: ", newLine, "<br>"
+				FILE.write(newLine)
+		FILE.close()
+	else: return
+
 
 def hasFriend(user, friend):
 	FILE = open('../friends.txt', 'r')
-	for f in FILE:
-		tokens = f.split()
-		if user == tokens[0]:
-			for tok in tokens:
+	for line in FILE:
+		if user == line.split(" ")[0]:
+			for tok in line.split():
 				if friend == tok: return 1
+	FILE.close()
 	return 0
 try:
+	#for toAdd in newFriends:
+	#	addFriend(currUser, toAdd)
 	head()
 except:
 	cgi.print_exception()
