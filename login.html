@@ -9,32 +9,25 @@
         <title> login | Tinder for Friends </title>
 
 	<!-- will make a css style sheet that matches whatever ethan designs  -->
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
      </head>
 
     <body>
 	<!-- a login card -->
-        <div class="login-card">
+        <div class="login">
             <h1>Log-in<h1><br>
 
 	    <!-- form asks user for their username and password -->
             <form action="./cgi-bin/login.cgi" method="post"> 
                 <input type="text" name="user" placeholder="Username">
                 <input type="password" name="pass" placeholder="Password">
-                <input type="submit" name="login" class="login login-submit" value="login">
+                <input type="submit" name="login" value="login">
             </form>
-
-
-	    <!-- If user has not registered this will link to registration page and maybs an email verification page for forgetten passwords -->
-            <div class="login-help">
-                <a href="#">Register</a> 
-                <a href="#">Forgot Password</a>
-            </div>
         </div>
         <br><br>
 
 	<!-- a registration card -->
-	<div class="registration-card">
+	<div class="registration">
 		<h1>Register</h1><br>
 
 		<!-- form asks user for full name, job description, desired username and pasword -->
@@ -43,7 +36,7 @@
 		    <textarea rows="4" cols="50" name="job" form="usrform" placeHolder="Describe your occupation in less than 250 characters..." maxlength="250"></textarea><br><br>
 		    <input type="text" name="user" placeholder="Create a Username..." maxlength="30">
 		    <input type="password" name="pass" placeholder="New Password" maxlength="30">
-		    <input type="submit" name="register" class="register register-submit" value="register">
+		    <input type="submit" name="register" value="register">
 		</form>
 	</div> 
     </body>
