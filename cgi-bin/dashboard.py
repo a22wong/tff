@@ -6,9 +6,7 @@ cgitb.enable()
 
 form=cgi.FieldStorage()
 
-name=form.getvalue('fullname')
 username=form.getvalue('username')
-job=form.getvalue('job')
 
 def head():
 
@@ -22,28 +20,36 @@ def head():
 
 		<body bgcolor="ECFAFF">
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
-        	        <p align="left">
+        	"""
+	print """ <p align="right">
+                        <a href="../index.html">
+                                Logout
+                      </a>
+                      </p>
+
+		<p align="left">
 		"""
-	print "", name
+	print "%s's dashboard" % username
 	print "<br>"
-	print "", job
 
 	print """
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
-			<p align="right">
-			<a href="./makefriends.py">
-                	        Make Friends
-              		 </a>
-			&emsp;
-			<a href="./seefriends.cgi">
-                	        See Friends
-               		 </a>
-			&emsp;
-			<a href="../index.html">
-                	        Logout
-          	      </a>
-			</p>
+			<p>
+			<form name="makefriends" action="makefriends.py" method="post">
+			<input type="submit" value="Make Friends">
+			<input type="hidden" name="username" value=
 		"""
+	print "\"%s\">" % username
+	print "</form>"
+	print """
+		<p>
+		<form name="seefriends" action="seefriends.cgi" method="post">
+                        <input type="submit" value="See Friends">
+                        <input type="hidden" name="username" value=
+                """
+        print "\"%s\">" % username
+        print "</form>"
+
 def form():
 	print """ <form name="status" action="status.py" method="post">
 
@@ -53,8 +59,10 @@ def form():
 		<input type="text" name="status" width="48" height="30">
 	
 		<input type="submit" value="Post">
-		<input type="hidden" name="username" value="username"
-		</form>
+		<input type="hidden" name="username" value=
+		"""
+	print "\"%s\">" % username
+	print """</form>
 	
 		<br><br>
 	

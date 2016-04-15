@@ -30,10 +30,20 @@ def redirect():
 		<head> <meta http-equiv="refresh" content="0;url=./dashboard.py">
 		</head>
 		<body>
-		If not redirected, 
+		<form name="info" action="dashboard.py" method="post">
+		<input type="hidden" name="username" value=
+		"""
+	print	"\"%s\">" % username
+	print """If not redirected, 
 		<a href="./dashboard.py"> click here</a>
+		</form>
 		</body>
 		</html>
 		"""
-write()
-redirect()
+#main method
+if __name__=="__main__":
+	try:
+		write()
+		redirect()
+	except:
+		cgi.print_exception()
