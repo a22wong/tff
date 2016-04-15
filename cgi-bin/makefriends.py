@@ -1,23 +1,51 @@
-#!/user/bin/python
+#!/usr/bin/python
 
 import cgi, cgitb
 cgitb.enable()
 
-from = cgi.FieldStorage()
+form=cgi.FieldStorage()
 
 def head():
+
+	print "Content-Type:text/html\n\n"
+	#print headers
 	print """
-		<!DOCTYPE html>
 		<html>
-			<title>Make a Friend!</title>
-			<body bgcolor="ECFAFF"><center>
-				<h2>Make a Friend by choosing from the list below</h2>
+			<head>
+				<title>Make a Friend!</title>
+			</head>
+			<body><center>
+				<h1>Make a friend by choosing from the list below</h1>
 		"""
+	#read users.txt
+	FILE=open('../users.txt', 'r')
+	
+	#loop through users.txt
+	i=4
+	for line in FILE:
+		
+		if (i%4) == 0:
+			print """
+				<form action='newfriends.py'>
+					<input type="checkbox" name="newfriend" value="
+				"""
+			
+			#print each username
+			print line, """ "> """, line, "<br>"
+			
+			#close form
+			print """
+				</form>
+				"""
+		i+=1
+	#print bottom of html	
 	print """
-			<input type="checkbox" name="new_friend" value="""line""">"""line"""<br>"""
-			</form>
 			</center></body>
 		</html>
 		"""
 
-def addFriend():
+#main
+try:
+	head()
+except:
+	cgi.print_exception()
