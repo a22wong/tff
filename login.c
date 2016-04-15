@@ -76,24 +76,25 @@ char *getInfo(char *src, int n) {
 }
 
 /* print login success */
-void printSuccess(char *uname) {
-        printf("<head>"
-//	"<meta http-equiv='refresh' content=\"0; url='../dashboard.html'/>"
-	"<title> Login Success </title><head>"
-        "<body>"
-	"<form>"
-	"<input type='hidden' name='username' value='%s'></form>"
-	"<a href='./dashboard.py'>link to dashboard</a>", uname);
+void printSuccess(char *uname, char *pass) {
+	printf("<head> <title> Login Success </title> </head>"
+	"<body>"
+	"<h1>Welcome %s!</h1>"
+	"<form action='./dashboard.py' method='post'>"
+	"	<input type='hidden' name='hiddenuname' value='%s'>"
+	"	<input type='hidden' name='hiddenpass' value='%s'>"
+	"	<input type='button' onclick='./dashboard.py' value='go to your page'"
+	"</form>", uname, uname, pass);
 }
 
 /* print login password failure */
 void printPFailure() {
         printf("<head><title> Login Failure </title></head>"
         "<body>"
-        "<p>Log into Tinder for Friends"
-        "<p>The password you provided was incorrect.<br>"
-        "<a href='../login.html'>Try Again</a><br>"
-        "<a href='../index.html'>Return to Welcome Page</a>");
+        "	<p>Log into Tinder for Friends"
+        "	<p>The password you provided was incorrect.<br>"
+        "	<a href='../login.html'>Try Again</a><br>"
+        "	<a href='../index.html'>Return to Welcome Page</a>");
 }
 
 /* print login username failure */
@@ -137,7 +138,7 @@ int main(int argc, char *argv[]) {
 	if (line != -1) {
 		int match = passMatch(pass,line,fp);
 		if (match) {
-			printSuccess(uname);
+			printSuccess(uname, pass);
 		} else {
 			printPFailure();
 		}
