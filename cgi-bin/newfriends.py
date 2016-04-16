@@ -3,16 +3,22 @@
 import cgi, cgitb
 form = cgi.FieldStorage()
 newFriends = form.getlist("newfriends")
-#currUser = form.getvalue("username")
-currUser = "wongy"
+currUser = form.getvalue("username")
+#currUser = "wongy"
 
 def head():
 	print "Content-Type:text/html\n\n"
 	print """
 		<!DOCTYPE html>
 		<html>
-			<a href="./dashboard.py">Return to Dashboard</a><br>
+			<body>
+			<form name="return" action="dashboard.py" method="post">
+			<input type="submit" value="Return to Dashboard">
+			<input type="hidden" name="username" value=
 		"""
+	print "\"%s\">" % currUser
+
+		
 	for friend in form.getlist("newfriend"):
 		print "Adding: ", friend, "<br>"
 		addFriend(currUser, friend)

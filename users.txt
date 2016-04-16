@@ -22,3 +22,11 @@ vybihal
 password
 Joseph Vybihal
 I taught Bob to bob is bobs.
+eth
+cohn
+Ethan Cohn
+I go to mcgill and stuff
+cahal
+mccabe
+Cahal Mccabe
+I am a friend finder

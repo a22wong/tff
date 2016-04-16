@@ -39,7 +39,7 @@ def head():
 		i+=1
 		j+=1
 	print """<input type="submit" value="Submit">"""
-	print """<input type="hidden" name="username" value="username">"""
+	print """<input type="hidden" name="username" value="%s">""" % form.getvalue('username')
 	print "</form>"
 	#print bottom of html	
 	print """
