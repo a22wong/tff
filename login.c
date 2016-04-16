@@ -4,7 +4,7 @@
 
 #define DATA "../users.txt"
 #define QLEN atoi(getenv("CONTENT_LENGTH")) /* defines a max length for 'query string' */
-#define VLEN QLEN-10 /* defines a max length for any variable value in 'query string' */
+#define VLEN QLEN-8 /* defines a max length for any variable value in 'query string' */
 
 /* compare two strings (case sensitive) */
 int mystrcmp(char *a, char *b) {
@@ -76,15 +76,15 @@ char *getInfo(char *src, int n) {
 }
 
 /* print login success */
-void printSuccess(char *uname, char *pass) {
+void printSuccess(char *uname) {
 	printf("<head>"
-	"<meta http-equiv='refresh' content=\"0;url=./dashboard.py\">"
+	//"<meta http-equiv='refresh' content=\"0;url=./dashboard.py\">"
 	" <title> Login Success </title> </head>"
 	"<body>"
 	"<form action='./dashboard.py' method='post'>"
-	"	<input type='hidden' name='hiddenuname' value='%s'>"
-	"	<input type='hidden' name='hiddenpass' value='%s'>"
-	"</form>", uname, uname, pass);
+	"	<input type='submit' name='Go to Dashboard' value='Go to Dashboard'>"
+	"	<input type='hidden' name='username' value='%s'>"
+	"</form>", uname);
 }
 
 /* print login password failure */
@@ -113,39 +113,40 @@ int main(int argc, char *argv[]) {
 	printf("Content-Type: text/html\n\n"
 	"<html>");
 
-	/* open user logfile for reading, if unsuccessfull open throw error message */
-	FILE *fp;
-	fp=fopen(DATA,"r");
-	if (fp==NULL) { 
-	//printf("ERROR CANNOT OPEN USER LOG\n");
-		printUFailure();
-	 	return 1; 
-	}
-
 	/* retrive information from html form */
 	char *userinput = (char *)malloc(sizeof(char)*QLEN);
 	fread(userinput, QLEN, 1, stdin);
 	if (userinput == NULL) { printf("<p>ERROR CANNOT RETRIEVE USERINPUT\n"); return 2; }
 
 	/* pull username and password from userinput */
-	char *uname = getInfo(userinput, 5); /* retrieve username */
+	char *uname = getInfo(userinput, 5); 		/* retrieve username */
 	char *data = strstr(userinput, "pass");
-	char *pass = getInfo(data, 5); /* retrieve password */
+	char *pass = getInfo(data, 5); 			/* retrieve password */
 
+	/* allocate memory */
+        double *ptr_d;
+        FILE *ptr_fp;
+
+        ptr_d = (double *)malloc(BUFSIZ*sizeof(double));
+        if (!ptr_d) { printf("(1) MEMORY ALLOCATION ERROR<br>"); return 1; }
+
+        /* open user log file for reading */
+        if ((ptr_fp = fopen(DATA,"r")) == NULL) { printf("(2) ERROR UNABLE TO OPEN %s<br>", DATA); return 2; }
 
 	/* If given username is found in user log and if the password matches, login in successfull */
-	int line = findUser(uname, fp);
+	int line = findUser(uname, ptr_fp);
 	if (line != -1) {
-		int match = passMatch(pass,line,fp);
+		int match = passMatch(pass,line,ptr_fp);
 		if (match) {
-			printSuccess(uname, pass);
+			printSuccess(uname);
 		} else {
 			printPFailure();
 		}
 	} else {
 		printUFailure();
 	}
-	fclose(fp);
+	fclose(ptr_fp);
+	free(ptr_d);
 
 	/* End HTML script */
 	printf("</body></html>");

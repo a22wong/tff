@@ -1,24 +1,22 @@
 #!/usr/bin/python
 
 import cgi, cgitb
-
 cgitb.enable()
 
-form=cgi.FieldStorage()
-
-username=form.getvalue('username')
+form = cgi.FieldStorage()
+username = form.getvalue("username")
 
 def head():
-
 	print "Content-Type:text/html\n\n"
 	print """
 		<html>
-
 		<head>
-			<title> tff Dashboard </title> 
+			<meta name="author" content="Ethan Cohn">
+			<title> Tinder for Friends | Dashboard </title> 
+		</head>
 		</head>
 
-		<body bgcolor="ECFAFF">
+		<body >
 		<font face="Arial Rounded MT Bold" color="2340FA" size="3">
         	"""
 	print """ <p align="right">
@@ -86,6 +84,7 @@ def statuses():
 		if friends[i].split(" ")[0]==username:
 			fr=friends[i]
 			break
+		else: fr=""
 	
 	if len(statuses)>20:
 		for i in range (0, 20):
