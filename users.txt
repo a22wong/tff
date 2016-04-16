@@ -1,28 +1,16 @@
-USERNAME
-PASSWORD
-FULL NAME
-JOB DESCRIPTION
+username
+password
+fullname
+job description
 nasty
 milkmilk
-anna stathakos
-i make doors
-wongy
-cookies
-alex wong
-i make doorknobs
-cohny
-island
-ethan cohn
-i make doorframes
-bob
-bobbob
-bob mcbob
-i bob my head
-mary
-marymary
-mary mcmary
-i mary bob
-vybihal
-joseph
-joseph vybihal
-i make students cry (sometimes)
+nastia burnette
+eats a lot of milk
+nickel
+back
+beardy
+bossy
+mr.tee
+meat
+studs
+and full metal jackets
